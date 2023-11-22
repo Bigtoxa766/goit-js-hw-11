@@ -1,4 +1,5 @@
 import Notiflix from 'notiflix';
+import axios from 'axios';
 
 export class PixabayAPI {
   API_KEY = '34923818-41fb85465916de5dce0352c63';
