@@ -1,0 +1,40 @@
+.header{
+   background-color: blue;
+   padding-bottom: 10px;
+   display: flex;
+   justify-content: center;
+
+   margin-bottom: 30px;
+}
+.search-form{
+  margin-top: 10px;
+}
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+ 
+  margin-bottom: 15px;
+}
+
+.info{
+  display: flex;
+  justify-content:space-around
+}
+.photo-card{
+  width: 351px;
+  
+  text-align: center;
+
+  border: 1px solid gray;
+}
+.photo-wrapper{
+  height: 230px;
+  overflow: hidden;
+}
+.info-item{
+  display: flex;
+  flex-direction: column;
+  
+  
+}
