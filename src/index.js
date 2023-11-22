@@ -6,7 +6,6 @@ import { PixabayAPI } from "./PixabayAPI";
 
 const formEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
 const target = document.querySelector('.js-guard');
 
 // const showBigPicture = () => {
@@ -14,8 +13,6 @@ const target = document.querySelector('.js-guard');
 //   gallery.captionDelay = 250;
 //   gallery.on('show.simplelightbox');
 // };
-
-loadMoreBtn.hidden = true;
 
 let options = {
   root: null,
@@ -63,10 +60,9 @@ function onSearch(e) {
     formEl.reset();
     galleryEl.innerHTML = '';
     renderCard(data.hits);
-    loadMoreBtn.hidden = false;
 
     if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
-        loadMoreBtn.hidden = true;
+        
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
     }
 
