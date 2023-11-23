@@ -1,6 +1,6 @@
 import Notiflix from 'notiflix';
-// import SimpleLightbox from "simplelightbox";
-// import "simplelightbox/dist/simple-lightbox.min.css";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { PixabayAPI } from "./PixabayAPI";
 
@@ -8,11 +8,11 @@ const formEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const target = document.querySelector('.js-guard');
 
-// const showBigPicture = () => {
-//   let gallery = new SimpleLightbox('.photo-wrapper a');
-//   gallery.captionDelay = 250;
-//   gallery.on('show.simplelightbox');
-// };
+const showBigPicture = () => {
+  let gallery = new SimpleLightbox('.photo-wrapper a');
+  gallery.captionDelay = 250;
+  gallery.on('show.simplelightbox');
+};
 
 let options = {
   root: null,
@@ -29,6 +29,8 @@ function onLoad(entries, observer) {
   pixabayAPI.fetchPhoto()
     .then(data => {
       renderCard(data.hits);
+      
+      showBigPicture().refresh()
 
       if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
         observer.unobserve(target)
@@ -46,13 +48,15 @@ formEl.addEventListener('submit', onSearch);
 function onSearch(e) {
   e.preventDefault();
   
-  const searchQuery = e.target.elements.searchQuery.value;
+  let searchQuery = e.target.elements.searchQuery.value.trim();
   pixabayAPI.query = searchQuery;
+  pixabayAPI.page = 1;
 
   pixabayAPI.fetchPhoto().then(data => {
 
-    if (data.hits.length === 0) {
-      Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.")
+    if (data.hits.length === 0 || pixabayAPI.query === '') {
+      formEl.reset();
+     return Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.")
     }
 
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`)
@@ -60,6 +64,8 @@ function onSearch(e) {
     formEl.reset();
     galleryEl.innerHTML = '';
     renderCard(data.hits);
+
+    showBigPicture();
 
     if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
         
