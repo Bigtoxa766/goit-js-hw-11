@@ -8,18 +8,18 @@ const formEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const target = document.querySelector('.js-guard');
 
-const showBigPicture = () => {
-  let gallery = new SimpleLightbox('.photo-wrapper a');
-  gallery.captionDelay = 250;
-  gallery.on('show.simplelightbox');
-};
-
 let options = {
   root: null,
-  rootMargin: "300px",
+  rootMargin: "500px",
+
 };
 
 let observer = new IntersectionObserver(onLoad, options);
+
+const showBigPicture = () => {
+  let gallery = new SimpleLightbox('.photo-wrapper a');
+  gallery.on('show.simplelightbox');
+};
 
 function onLoad(entries, observer) {
   entries.forEach((entry) => {
