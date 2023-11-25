@@ -8,19 +8,17 @@ const formEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const target = document.querySelector('.js-guard');
 
+const pixabayAPI = new PixabayAPI();
+
 let options = {
   root: null,
   rootMargin: "500px",
-
 };
 
 let observer = new IntersectionObserver(onLoad, options);
 
-const showBigPicture = () => {
-  let gallery = new SimpleLightbox('.photo-wrapper a');
-  gallery.on('show.simplelightbox');
-};
-
+const showBigPicture =  new SimpleLightbox('.photo-wrapper a');
+ 
 function onLoad(entries, observer) {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -29,19 +27,16 @@ function onLoad(entries, observer) {
   pixabayAPI.fetchPhoto()
     .then(data => {
       renderCard(data.hits);
-      
-      showBigPicture().refresh()
 
       if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
-        observer.unobserve(target)
+        observer.unobserve(target);
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
-    }
+      }
+      showBigPicture().refresh()
     })
     }
    })
 }
-
-const pixabayAPI = new PixabayAPI();
 
 formEl.addEventListener('submit', onSearch);
 
