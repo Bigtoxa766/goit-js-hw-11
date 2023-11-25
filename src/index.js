@@ -17,7 +17,7 @@ let options = {
 
 let observer = new IntersectionObserver(onLoad, options);
 
-const showBigPicture =  new SimpleLightbox('.photo-wrapper a');
+const simpleLightbox = () => new SimpleLightbox('.photo-wrapper a');
  
 function onLoad(entries, observer) {
   entries.forEach((entry) => {
@@ -32,7 +32,7 @@ function onLoad(entries, observer) {
         observer.unobserve(target);
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
       }
-      showBigPicture().refresh()
+      simpleLightbox().refresh()
     })
     }
    })
@@ -60,10 +60,10 @@ function onSearch(e) {
     galleryEl.innerHTML = '';
     renderCard(data.hits);
 
-    showBigPicture();
+    simpleLightbox();
 
     if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
-        
+        observer.unobserve(target);
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
     }
 
