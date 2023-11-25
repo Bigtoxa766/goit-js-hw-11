@@ -12,7 +12,7 @@ const pixabayAPI = new PixabayAPI();
 
 let options = {
   root: null,
-  rootMargin: "500px",
+  rootMargin: "300px",
 };
 
 let observer = new IntersectionObserver(onLoad, options);
@@ -28,15 +28,19 @@ function onLoad(entries, observer) {
     .then(data => {
       renderCard(data.hits);
 
-      if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
+      simpleLightbox().refresh();
+
+      if (data.hits.length === 0
+        || data.hits.length < pixabayAPI.perPage
+        || pixabayAPI.page >= data.totalHits / pixabayAPI.perPage) {
+        
         observer.unobserve(target);
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
       }
-      simpleLightbox().refresh()
     })
     }
    })
-}
+};
 
 formEl.addEventListener('submit', onSearch);
 
@@ -60,15 +64,14 @@ function onSearch(e) {
     galleryEl.innerHTML = '';
     renderCard(data.hits);
 
-    simpleLightbox();
+    simpleLightbox().refresh();
 
     if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
-        observer.unobserve(target);
         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
     }
 
     observer.observe(target);
-   
+    
   })
 };
 
@@ -101,17 +104,3 @@ function renderCard(arr) {
     galleryEl.insertAdjacentHTML('beforeend', markup)
   }).join()
 };
-
-// function onClick() {
-  
-//   pixabayAPI.page += 1;
-//   pixabayAPI.fetchPhoto()
-//     .then(data => {
-//       renderCard(data.hits)
-
-//       if (data.hits.length === 0 || data.hits.length < pixabayAPI.perPage) {
-//         loadMoreBtn.hidden = true;
-//         return Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
-//     }
-//     })
-// };
